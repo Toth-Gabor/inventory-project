@@ -28,7 +28,6 @@ public abstract class Store implements StorageCapable{
     public List<Product> loadProduct(){
         //read from xml to list
         // file path --> src/main/java/data/products.xml
-        InputStream is = new Inpu
         return null;
     }
 
