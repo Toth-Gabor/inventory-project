@@ -10,11 +10,13 @@ public class BookProduct extends Product{
         this.numOfPages = numOfPages;
     }
     
-    public int getNumOfPages() {
-        return numOfPages;
+    @Override
+    public int getSize(){
+        return this.numOfPages;
     }
     
-    public void setNumOfPages(int numOfPages) {
-        this.numOfPages = numOfPages;
+    @Override
+    public String toString() {
+        return "Book";
     }
 }

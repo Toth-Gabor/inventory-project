@@ -31,7 +31,6 @@ public class StoreManager {
         int totalProductPrice = 0;
         for (Product product : storageCapable.getAllProduct()) {
             totalProductPrice += product.getPrice();
-
         }
         return totalProductPrice;
     }

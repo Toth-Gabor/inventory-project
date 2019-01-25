@@ -13,12 +13,7 @@ public abstract class Product {
         return this.price;
     }
     
-    public void setName(String name) {
-        this.name = name;
-    }
-    
-    public void setPrice(int price) {
-        this.price = price;
-    }
+    public abstract int getSize();
+
 }
 

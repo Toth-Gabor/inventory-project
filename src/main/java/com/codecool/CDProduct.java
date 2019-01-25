@@ -10,11 +10,13 @@ public class CDProduct extends Product{
         this.numOfTracks = numOfTracks;
     }
     
-    public void setNumOfTracks(int numOfTracks) {
-        this.numOfTracks = numOfTracks;
+    @Override
+    public int getSize(){
+        return this.numOfTracks;
     }
     
-    public int getNumOfTracks(){
-        return this.numOfTracks;
+    @Override
+    public String toString(){
+        return "CD";
     }
 }
