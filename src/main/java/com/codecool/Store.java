@@ -1,12 +1,5 @@
 package com.codecool;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.*;
 
 public abstract class Store implements StorageCapable{
@@ -16,6 +9,7 @@ public abstract class Store implements StorageCapable{
 
     protected abstract void saveToXml(Product product);
     protected abstract void storeProduct(Product product);
+    protected abstract void saveToCsv(Product product);
     protected abstract List<Product> loadProduct();
 
     protected Product createProduct(String type, String name, int price, int size){
@@ -36,6 +30,8 @@ public abstract class Store implements StorageCapable{
     public void store(Product product){
         saveToXml(product);
         storeProduct(product);
+        saveToCsv(product);
+        
     }
     
     @Override

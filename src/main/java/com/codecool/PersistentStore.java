@@ -5,32 +5,56 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.*;
+import javax.xml.transform.*;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 public class PersistentStore extends Store{
     
-    private File file = new File("src/main/java/data/products.xml");
-    protected List<Product> allProduct = new ArrayList<>();// ez így nem jó
-
+    private File xmlFile = new File("src/main/java/data/productsSample.xml");
+    protected List<Product> allProduct = new ArrayList<>();
+    
+    @Override
+    protected void saveToCsv(Product product) {
+    
+    }
+    
     @Override
     protected void saveToXml(Product product){
-        DocumentBuilderFactory bFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder builder = null;
         try {
-            builder = bFactory.newDocumentBuilder();
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
+            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+        
+            Document doc = docBuilder.newDocument();
+            Element rootElement = doc.createElement("Products");
+            doc.appendChild(rootElement);
+        
+            Element productTag = doc.createElement("Product");
+            rootElement.appendChild(productTag);
+        
+            productTag.setAttribute("name", product.getName());
+            productTag.setAttribute("price", Integer.toString(product.getPrice()));
+            productTag.setAttribute("size", Integer.toString(product.getSize()));
+            productTag.setAttribute("type", product.toString());
+        
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            DOMSource source = new DOMSource(doc);
+            StreamResult result = new StreamResult(xmlFile);
+        
+            transformer.transform(source, result);
+        
+            System.out.println("File saved!");
+        
+        } catch (ParserConfigurationException pce) {
+            pce.printStackTrace();
+        } catch (TransformerException tfe) {
+            tfe.printStackTrace();
         }
-
-        //xml cucc ide!!!
     }
     
     @Override
@@ -42,10 +66,9 @@ public class PersistentStore extends Store{
     protected List<Product> loadProduct() {
         try {
             
-            
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder db = dbf.newDocumentBuilder();
-            Document document = db.parse(file);
+            Document document = db.parse(xmlFile);
             document.getDocumentElement().normalize();
             NodeList nodeList = document.getElementsByTagName("Product");
     
@@ -66,7 +89,5 @@ public class PersistentStore extends Store{
             e.printStackTrace();
         }
         return null;
-
     }
-
 }
